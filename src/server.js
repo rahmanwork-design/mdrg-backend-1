@@ -98,22 +98,28 @@ app.get('/api/activity/recent', async (req, res) => {
   }
 });
 
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../public')));
-
-// API routes should be before the catch-all
-// Catch-all handler: send back React's index.html file for any non-API routes
-app.get('*', (req, res) => {
-  // Don't handle API routes here
-  if (req.path.startsWith('/api/')) {
-    return res.status(404).json({
-      success: false,
-      message: 'API endpoint not found.'
-    });
-  }
-  res.sendFile(path.join(__dirname, '../public/index.html'));
+// Root endpoint - API info
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'MDRG Backend API',
+    version: '1.0.0',
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth',
+      clients: '/api/clients',
+      dashboard: '/api/dashboard/stats'
+    }
+  });
 });
 
+// 404 handler for API routes
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'API endpoint not found.'
+  });
+});
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Error:', err);
