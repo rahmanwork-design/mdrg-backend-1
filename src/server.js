@@ -97,7 +97,6 @@ app.get('/api/activity/recent', async (req, res) => {
     });
   }
 });
-
 // Root endpoint - API info
 app.get('/', (req, res) => {
   res.json({
@@ -112,7 +111,6 @@ app.get('/', (req, res) => {
     }
   });
 });
-
 // 404 handler for API routes
 app.use((req, res) => {
   res.status(404).json({
